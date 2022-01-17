@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="BtnStyle" parent="TextAppearance.AppCompat.Button">
+        <item name="android:backgroundTint">@color/white</item>
+<!--        <item name="android:background">@drawable/buttonshape</item>-->
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="BtnOperationStyle" parent="TextAppearance.AppCompat.Button">
+        <item name="android:backgroundTint">@color/teal_200</item>
+<!--        <item name="android:background">@drawable/buttonshape</item>-->
+        <item name="android:layout_margin">5dp</item>
+    </style>
+</resources>
