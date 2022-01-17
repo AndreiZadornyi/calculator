@@ -8,11 +8,33 @@ class MainActivity : AppCompatActivity() {
 
     var value: Double = 0.0
     var operation: String? = null
+    var position_delimiter: Int? = null
+    var number: Int? = null
+    var flag_delimiter: Boolean? = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setupView()
+    }
+
+    fun inputNumber(number: Int) {
+
+        when {
+            position_delimiter != null && flag_delimiter == true -> {
+                flag_delimiter = false
+                screen.text = screen.text.substring(0, screen.text.length - 1) + number
+            }
+            screen.text.toString() != "0" && operation == null -> {
+
+                screen.text = screen.text.toString() + number.toString()
+            }
+            else -> {
+                screen.text = number.toString()
+            }
+
+        }
+
     }
 
     fun setupView() {
@@ -30,108 +52,56 @@ class MainActivity : AppCompatActivity() {
         }
 
         btn_0.setOnClickListener {
-            var temp = screen.text.toString()
 
-            if (temp != "0" && operation == null) {
-                screen.text = temp + "0"
+
+            if (screen.text.toString() != "0" && operation == null) {
+                screen.text = screen.text.toString() + "0"
             } else {
                 screen.text = "0"
             }
         }
 
         btn_1.setOnClickListener {
-            var temp = screen.text.toString()
-
-            if (temp != "0" && operation == null) {
-                screen.text = temp + "1"
-            } else {
-                screen.text = "1"
-            }
+            inputNumber(1)
         }
 
         btn_2.setOnClickListener {
-            var temp = screen.text.toString()
-
-            if (temp != "0" && operation == null) {
-                screen.text = temp + "2"
-            } else {
-                screen.text = "2"
-            }
+            inputNumber(2)
         }
 
         btn_3.setOnClickListener {
-            var temp = screen.text.toString()
-
-            if (temp != "0" && operation == null) {
-                screen.text = temp + "3"
-            } else {
-                screen.text = "3"
-            }
+            inputNumber(3)
         }
 
         btn_4.setOnClickListener {
-            var temp = screen.text.toString()
-
-            if (temp != "0" && operation == null) {
-                screen.text = temp + "4"
-            } else {
-                screen.text = "4"
-            }
+            inputNumber(4)
         }
 
         btn_5.setOnClickListener {
-            var temp = screen.text.toString()
-
-            if (temp != "0" && operation == null) {
-                screen.text = temp + "5"
-            } else {
-                screen.text = "5"
-            }
+            inputNumber(5)
         }
 
         btn_6.setOnClickListener {
-            var temp = screen.text.toString()
-
-            if (temp != "0" && operation == null) {
-                screen.text = temp + "6"
-            } else {
-                screen.text = "6"
-            }
+            inputNumber(6)
         }
 
         btn_7.setOnClickListener {
-            var temp = screen.text.toString()
-
-            if (temp != "0" && operation == null) {
-                screen.text = temp + "7"
-            } else {
-                screen.text = "7"
-            }
+            inputNumber(7)
         }
 
         btn_8.setOnClickListener {
-            var temp = screen.text.toString()
-
-            if (temp != "0" && operation == null) {
-                screen.text = temp + "8"
-            } else {
-                screen.text = "8"
-            }
+            inputNumber(8)
         }
 
         btn_9.setOnClickListener {
-            var temp = screen.text.toString()
-
-            if (temp != "0" && operation == null) {
-                screen.text = temp + "9"
-            } else {
-                screen.text = "9"
-            }
+            inputNumber(9)
         }
 
         btn_c.setOnClickListener {
             screen.text = "0"
             operation = null
+            position_delimiter = null
+            value = 0.0
         }
 
         btn_percent.setOnClickListener {
@@ -141,10 +111,17 @@ class MainActivity : AppCompatActivity() {
 
         btn_backspace.setOnClickListener {
 
-            if (screen.text.length < 2) {
-                screen.text = "0"
-            } else {
-                screen.text = screen.text.substring(0, screen.text.length - 1)
+            when {
+                position_delimiter == screen.text.length - 2 -> {
+                    screen.text = screen.text.substring(0, screen.text.length - 2)
+                    position_delimiter = null
+                }
+                screen.text.length < 2 -> {
+                    screen.text = "0"
+                }
+                else -> {
+                    screen.text = screen.text.substring(0, screen.text.length - 1)
+                }
             }
         }
 
@@ -163,6 +140,14 @@ class MainActivity : AppCompatActivity() {
             operation = "*"
         }
 
+        btn_delimiter.setOnClickListener {
+            if (position_delimiter == null) {
+                flag_delimiter = true
+                position_delimiter = screen.text.length
+                screen.text = screen.text.toString() + ".0"
+            }
+        }
+
         btn_equals.setOnClickListener {
 
             var temp = (screen.text as String).toDouble()
@@ -170,7 +155,6 @@ class MainActivity : AppCompatActivity() {
             when (operation) {
                 "%" -> {
                     screen.text = (value / 100 * temp).toString()
-                    operation = null
                 }
                 "/" -> {
                     screen.text = (value / temp).toString()
@@ -185,6 +169,8 @@ class MainActivity : AppCompatActivity() {
                     screen.text = (value * temp).toString()
                 }
             }
+
+            operation = null
         }
     }
 }
