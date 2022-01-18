@@ -9,7 +9,12 @@ class MainActivity : AppCompatActivity() {
     var value: Double = 0.0
     var operation: String? = null
     var position_delimiter: Int? = null
-    var number: Int? = null
+    var two_null: Boolean? = false
+
+    val reg_ex_delimiter = Regex("[.]+")
+    val reg_ex_find_delimiter = Regex("[.][0-9]{1}$+")
+
+    //    var number: Int? = null
     var flag_delimiter: Boolean? = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,22 +23,53 @@ class MainActivity : AppCompatActivity() {
         setupView()
     }
 
-    fun inputNumber(number: Int) {
+    fun inputNumber(number: String) {
 
         when {
-            position_delimiter != null && flag_delimiter == true -> {
-                flag_delimiter = false
-                screen.text = screen.text.substring(0, screen.text.length - 1) + number
-            }
-            screen.text.toString() != "0" && operation == null -> {
 
-                screen.text = screen.text.toString() + number.toString()
-            }
-            else -> {
-                screen.text = number.toString()
+            number == ".0" && !reg_ex_delimiter.containsMatchIn(screen.text.toString()) -> {
+                screen.text = screen.text.toString() + number
             }
 
+            number == "00" && screen.text.toString() != "0" -> {
+                screen.text = screen.text.toString() + number
+            }
+
+            number == "0" && screen.text.toString() != "0" -> {
+                screen.text = screen.text.toString() + number
+            }
+
+            screen.text.toString() == "0" && number != "00"-> {
+                screen.text = number
+            }
+
+            screen.text.toString() != "0" && number != "00" -> {
+                screen.text = screen.text.toString() + number
+            }
         }
+//
+//
+////            flag_delimiter == true -> {
+////                flag_delimiter = false
+////                if (number == 0) {
+////                    screen.text = screen.text.toString() + "0"
+////                } else {
+////                    screen.text = screen.text.substring(0, screen.text.length - 1) + number
+////                }
+////            }
+//
+////            screen.text.toString() != "0" && operation == null -> {
+////                if (two_null == true) {
+////                    screen.text = screen.text.toString() + "00"
+////                    two_null = false
+////                } else {
+////                    screen.text = screen.text.toString() + number.toString()
+////                }
+////            }
+//            else -> {
+//                screen.text = number.toString()
+//            }
+
 
     }
 
@@ -42,59 +78,51 @@ class MainActivity : AppCompatActivity() {
         screen.text = "0"
 
         btn_00.setOnClickListener {
-            var temp = screen.text.toString()
-
-            if (temp != "0" && operation == null) {
-                screen.text = temp + "00"
-            } else {
-                screen.text = "0"
-            }
+            inputNumber("00")
         }
 
         btn_0.setOnClickListener {
-
-
-            if (screen.text.toString() != "0" && operation == null) {
-                screen.text = screen.text.toString() + "0"
-            } else {
-                screen.text = "0"
-            }
+            inputNumber("0")
         }
 
         btn_1.setOnClickListener {
-            inputNumber(1)
+            inputNumber("1")
         }
 
         btn_2.setOnClickListener {
-            inputNumber(2)
+            inputNumber("2")
         }
 
         btn_3.setOnClickListener {
-            inputNumber(3)
+            inputNumber("3")
         }
 
         btn_4.setOnClickListener {
-            inputNumber(4)
+            inputNumber("4")
         }
 
         btn_5.setOnClickListener {
-            inputNumber(5)
+            inputNumber("5")
         }
 
         btn_6.setOnClickListener {
-            inputNumber(6)
+            inputNumber("6")
         }
 
         btn_7.setOnClickListener {
-            inputNumber(7)
+            inputNumber("7")
         }
 
         btn_8.setOnClickListener {
-            inputNumber(8)
+            inputNumber("8")
         }
 
         btn_9.setOnClickListener {
-            inputNumber(9)
+            inputNumber("9")
+        }
+
+        btn_delimiter.setOnClickListener {
+            inputNumber(".0")
         }
 
         btn_c.setOnClickListener {
@@ -112,9 +140,8 @@ class MainActivity : AppCompatActivity() {
         btn_backspace.setOnClickListener {
 
             when {
-                position_delimiter == screen.text.length - 2 -> {
+                reg_ex_find_delimiter.containsMatchIn(screen.text.toString()) -> {
                     screen.text = screen.text.substring(0, screen.text.length - 2)
-                    position_delimiter = null
                 }
                 screen.text.length < 2 -> {
                     screen.text = "0"
@@ -138,14 +165,6 @@ class MainActivity : AppCompatActivity() {
         btn_multiply.setOnClickListener {
             value = (screen.text as String).toDouble()
             operation = "*"
-        }
-
-        btn_delimiter.setOnClickListener {
-            if (position_delimiter == null) {
-                flag_delimiter = true
-                position_delimiter = screen.text.length
-                screen.text = screen.text.toString() + ".0"
-            }
         }
 
         btn_equals.setOnClickListener {
