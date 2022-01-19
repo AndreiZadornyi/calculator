@@ -8,26 +8,34 @@
 
 
     <LinearLayout
-        android:id="@+id/screen"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="20dp"
         android:background="@color/white"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/result"
+            android:id="@+id/rv_result"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_result"/>
+            tools:listitem="@layout/item_result" />
+
+
 
     </LinearLayout>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/screen"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tableLayout"/>
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="match_parent"

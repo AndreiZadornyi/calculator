@@ -2,7 +2,10 @@ package com.example.calculator
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.calculator.adapters.ItemListAdapter
+import com.example.calculator.models.ResultItem
+import com.example.calculator.utils.Preferences
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -10,20 +13,33 @@ class MainActivity : AppCompatActivity() {
     var value: Double = 0.0
     var operation: String? = null
     var position_delimiter: Int? = null
-    var two_null: Boolean? = false
 
     val reg_ex_delimiter = Regex("[.]+")
+    val reg_ex_delimiter_null = Regex("[.0]$+")
     val reg_ex_find_delimiter = Regex("[.][0-9]{1}$+")
 
     private var adapter: ItemListAdapter? = null
-
-    //    var number: Int? = null
-    var flag_delimiter: Boolean? = false
+    private var items: ArrayList<ResultItem>? = ArrayList<ResultItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setupView()
+    }
+
+//    override fun onResume() {
+//        super.onResume()
+//        showLogs()
+//        TrackService.initLogListener(LogListener())
+//    }
+
+    fun showLogs() {
+        if (adapter != null) {
+            items = Preferences(applicationContext).getLogResult()
+            if (items != null && items!!.size > 0) {
+                adapter?.setItems(items!!)
+            }
+        }
     }
 
     fun inputNumber(number: String) {
@@ -42,41 +58,25 @@ class MainActivity : AppCompatActivity() {
                 screen.text = screen.text.toString() + number
             }
 
-            screen.text.toString() == "0" && number != "00"-> {
+            screen.text.toString() == "0" && number != "00" -> {
                 screen.text = number
             }
 
-            screen.text.toString() != "0" && number != "00" -> {
+            screen.text.toString() != "0" && reg_ex_delimiter_null.containsMatchIn(screen.text.toString()) -> {
+                screen.text = screen.text.substring(0, screen.text.length - 1) + number
+            }
+
+            screen.text.toString() != "0" -> {
                 screen.text = screen.text.toString() + number
             }
         }
-//
-//
-////            flag_delimiter == true -> {
-////                flag_delimiter = false
-////                if (number == 0) {
-////                    screen.text = screen.text.toString() + "0"
-////                } else {
-////                    screen.text = screen.text.substring(0, screen.text.length - 1) + number
-////                }
-////            }
-//
-////            screen.text.toString() != "0" && operation == null -> {
-////                if (two_null == true) {
-////                    screen.text = screen.text.toString() + "00"
-////                    two_null = false
-////                } else {
-////                    screen.text = screen.text.toString() + number.toString()
-////                }
-////            }
-//            else -> {
-//                screen.text = number.toString()
-//            }
-
-
     }
 
     fun setupView() {
+
+        adapter = ItemListAdapter()
+        rv_result.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        rv_result.adapter = adapter
 
         screen.text = "0"
 
@@ -195,4 +195,16 @@ class MainActivity : AppCompatActivity() {
             operation = null
         }
     }
+
+    private inner class LogListener : LogInterfece {
+        override fun addLog(logItem: ResultItem) {
+            showLogs()
+        }
+
+    }
+
+    interface LogInterfece {
+        fun addLog(logItem: ResultItem)
+    }
+
 }
