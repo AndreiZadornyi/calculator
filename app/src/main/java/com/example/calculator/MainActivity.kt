@@ -2,6 +2,7 @@ package com.example.calculator
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.calculator.adapters.ItemListAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -13,6 +14,8 @@ class MainActivity : AppCompatActivity() {
 
     val reg_ex_delimiter = Regex("[.]+")
     val reg_ex_find_delimiter = Regex("[.][0-9]{1}$+")
+
+    private var adapter: ItemListAdapter? = null
 
     //    var number: Int? = null
     var flag_delimiter: Boolean? = false
