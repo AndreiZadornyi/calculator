@@ -12,14 +12,13 @@ class MainActivity : AppCompatActivity() {
 
     var value: Double = 0.0
     var operation: String? = null
-    var position_delimiter: Int? = null
 
     val reg_ex_delimiter = Regex("[.]+")
     val reg_ex_delimiter_null = Regex("[.0]$+")
     val reg_ex_find_delimiter = Regex("[.][0-9]{1}$+")
 
     private var adapter: ItemListAdapter? = null
-    private var items: ArrayList<ResultItem>? = ArrayList<ResultItem>()
+    private var items: Preferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +32,14 @@ class MainActivity : AppCompatActivity() {
 //        TrackService.initLogListener(LogListener())
 //    }
 
-    fun showLogs() {
-        if (adapter != null) {
-            items = Preferences(applicationContext).getLogResult()
-            if (items != null && items!!.size > 0) {
-                adapter?.setItems(items!!)
-            }
-        }
-    }
+//    fun showLogs() {
+//        if (adapter != null) {
+//            items = Preferences(applicationContext).getLogResult()
+//            if (items != null && items!!.size > 0) {
+//                adapter?.setItems(items!!)
+//            }
+//        }
+//    }
 
     fun inputNumber(number: String) {
 
@@ -131,13 +130,7 @@ class MainActivity : AppCompatActivity() {
         btn_c.setOnClickListener {
             screen.text = "0"
             operation = null
-            position_delimiter = null
             value = 0.0
-        }
-
-        btn_percent.setOnClickListener {
-            value = (screen.text as String).toDouble()
-            operation = "%"
         }
 
         btn_backspace.setOnClickListener {
@@ -155,56 +148,66 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        btn_percent.setOnClickListener {
+            value = (screen.text as String).toDouble()
+            operation = "%"
+            screen.text = "0"
+        }
+
         btn_addition.setOnClickListener {
             value = (screen.text as String).toDouble()
             operation = "+"
+            screen.text = "0"
         }
 
         btn_subtraction.setOnClickListener {
             value = (screen.text as String).toDouble()
             operation = "-"
+            screen.text = "0"
         }
 
         btn_multiply.setOnClickListener {
             value = (screen.text as String).toDouble()
             operation = "*"
+            screen.text = "0"
         }
 
         btn_equals.setOnClickListener {
 
-            var temp = (screen.text as String).toDouble()
+            var result_str = value.toString() + operation + screen.text.toString()
 
             when (operation) {
                 "%" -> {
-                    screen.text = (value / 100 * temp).toString()
+                    screen.text = (value / 100 * (screen.text as String).toDouble()).toString()
                 }
                 "/" -> {
-                    screen.text = (value / temp).toString()
+                    screen.text = (value / (screen.text as String).toDouble()).toString()
                 }
                 "+" -> {
-                    screen.text = (value + temp).toString()
+                    screen.text = (value + (screen.text as String).toDouble()).toString()
                 }
                 "-" -> {
-                    screen.text = (value - temp).toString()
+                    screen.text = (value - (screen.text as String).toDouble()).toString()
                 }
                 "*" -> {
-                    screen.text = (value * temp).toString()
+                    screen.text = (value * (screen.text as String).toDouble()).toString()
                 }
             }
 
+            items?.addItem(result_str)
             operation = null
         }
     }
 
-    private inner class LogListener : LogInterfece {
-        override fun addLog(logItem: ResultItem) {
-            showLogs()
-        }
-
-    }
-
-    interface LogInterfece {
-        fun addLog(logItem: ResultItem)
-    }
+//    private inner class LogListener : LogInterfece {
+//        override fun addLog(logItem: ResultItem) {
+//            showLogs()
+//        }
+//
+//    }
+//
+//    interface LogInterfece {
+//        fun addLog(logItem: ResultItem)
+//    }
 
 }

@@ -26,16 +26,17 @@
             tools:listitem="@layout/item_result" />
 
 
-
     </LinearLayout>
+
     <TextView
+        android:id="@+id/screen"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/screen"
         android:layout_marginHorizontal="10dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tableLayout"/>
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="match_parent"
@@ -46,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TableRow>
+        <TableRow android:gravity="center">
 
             <Button
                 android:id="@+id/btn_c"
@@ -77,7 +78,7 @@
                 android:text="/" />
         </TableRow>
 
-        <TableRow>
+        <TableRow android:gravity="center">
 
             <Button
                 android:id="@+id/btn_7"
@@ -109,7 +110,7 @@
 
         </TableRow>
 
-        <TableRow>
+        <TableRow android:gravity="center">
 
             <Button
                 android:id="@+id/btn_4"
@@ -140,7 +141,7 @@
                 android:text="-" />
         </TableRow>
 
-        <TableRow>
+        <TableRow android:gravity="center">
 
             <Button
                 android:id="@+id/btn_1"
@@ -172,7 +173,7 @@
 
         </TableRow>
 
-        <TableRow>
+        <TableRow android:gravity="center">
 
             <Button
                 android:id="@+id/btn_00"

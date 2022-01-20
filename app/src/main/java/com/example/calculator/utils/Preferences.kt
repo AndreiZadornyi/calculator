@@ -11,7 +11,7 @@ import kotlin.collections.ArrayList
 
 class Preferences(private val context: Context) {
 
-    fun setLogResult(logs: ArrayList<ResultItem>?) {
+    fun setLogResult(logs: ArrayList<String>?) {
         var s = ""
         if (logs != null) {
             val gson = Gson()
@@ -22,7 +22,7 @@ class Preferences(private val context: Context) {
         edit.apply()
     }
 
-    fun getLogResult(): ArrayList<ResultItem>? {
+    fun getLogResult(): ArrayList<String>? {
         val gson = Gson()
         val s = context.getSharedPreferences("preferences", 0)
             .getString("result", null)
@@ -34,16 +34,16 @@ class Preferences(private val context: Context) {
         } else null
     }
 
-    fun addItem(logItem: ResultItem): ArrayList<ResultItem> {
+    fun addItem(resultItem: String) {
         var logs = getLogResult()
 
 
         if (logs == null) {
-            logs = ArrayList<ResultItem>()
+            logs = ArrayList<String>()
         }
-        logs.add(logItem)
+        logs.add(resultItem)
         setLogResult(logs)
-        return logs
+//        return logs
     }
 
 }
