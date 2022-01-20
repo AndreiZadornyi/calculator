@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_result.view.*
 
 class ItemListAdapter internal constructor() :
     RecyclerView.Adapter<ItemListAdapter.ViewHolderRecycleView>() {
-    private var items = emptyList<ResultItem>()
+    private var items = emptyList<String>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -26,8 +26,8 @@ class ItemListAdapter internal constructor() :
     override fun onBindViewHolder(holder: ItemListAdapter.ViewHolderRecycleView, position: Int) {
         val currentItem = items[position]
 
-        if (currentItem.result != "") {
-            holder.tv_result.text = currentItem.result
+        if (currentItem != "") {
+            holder.tv_result.text = currentItem
         }
     }
 
@@ -42,7 +42,7 @@ class ItemListAdapter internal constructor() :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setItems(_items: List<ResultItem>) {
+    fun setItems(_items: List<String>) {
         items = _items
         notifyDataSetChanged()
     }

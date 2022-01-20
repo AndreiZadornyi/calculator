@@ -28,21 +28,6 @@ class MainActivity : AppCompatActivity() {
         setupView()
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        showLogs()
-//        TrackService.initLogListener(LogListener())
-//    }
-
-//    fun showLogs() {
-//        if (adapter != null) {
-//            items = Preferences(applicationContext).getLogResult()
-//            if (items != null && items!!.size > 0) {
-//                adapter?.setItems(items!!)
-//            }
-//        }
-//    }
-
     fun inputNumber(number: String) {
 
         when {
@@ -73,6 +58,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun showLogs() {
+        if (adapter != null) {
+            var temp = Preferences(applicationContext).getLogResult()
+            if (temp != null && temp.size > 0) {
+                adapter?.setItems(temp)
+            }
+        }
+    }
+
     fun setupView() {
 
         adapter = ItemListAdapter()
@@ -80,6 +74,8 @@ class MainActivity : AppCompatActivity() {
         rv_result.adapter = adapter
 
         screen.text = "0"
+
+        showLogs()
 
         btn_00.setOnClickListener {
             inputNumber("00")
@@ -134,6 +130,7 @@ class MainActivity : AppCompatActivity() {
             operation = null
             value = 0.0
             items.onDestroy()
+            showLogs()
         }
 
         btn_backspace.setOnClickListener {
@@ -206,20 +203,9 @@ class MainActivity : AppCompatActivity() {
             )
 
             screen.text = result
-
+            showLogs()
             operation = null
         }
     }
-
-//    private inner class LogListener : LogInterfece {
-//        override fun addLog(logItem: ResultItem) {
-//            showLogs()
-//        }
-//
-//    }
-//
-//    interface LogInterfece {
-//        fun addLog(logItem: ResultItem)
-//    }
 
 }
