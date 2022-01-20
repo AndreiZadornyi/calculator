@@ -45,7 +45,7 @@ class Preferences(private val context: Context) {
 
 
         if (logs == null) {
-            logs = ArrayList<String>()
+            logs = ArrayList()
         }
         logs.add(resultItem)
         setLogResult(logs)

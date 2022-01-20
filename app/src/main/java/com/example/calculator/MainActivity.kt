@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.calculator.adapters.ItemListAdapter
-import com.example.calculator.models.LogResult
-import com.example.calculator.models.ResultItem
 import com.example.calculator.utils.Preferences
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -14,6 +12,7 @@ class MainActivity : AppCompatActivity() {
 
     var value: Double = 0.0
     var operation: String? = null
+    var result: String? = "0"
 
     val reg_ex_delimiter = Regex("[.]+")
     val reg_ex_delimiter_null = Regex("[.0]$+")
@@ -29,6 +28,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun inputNumber(number: String) {
+
+        if (result != "0") {
+            result = "0"
+            screen.text = "0"
+        }
 
         when {
 
@@ -129,8 +133,15 @@ class MainActivity : AppCompatActivity() {
             screen.text = "0"
             operation = null
             value = 0.0
+
+        }
+
+        btn_clear.setOnClickListener {
             items.onDestroy()
-            showLogs()
+            adapter = ItemListAdapter()
+            adapter!!.notifyDataSetChanged()
+            rv_result.adapter = adapter
+            screen.text = "0"
         }
 
         btn_backspace.setOnClickListener {
@@ -172,9 +183,13 @@ class MainActivity : AppCompatActivity() {
             screen.text = "0"
         }
 
-        btn_equals.setOnClickListener {
+        btn_devide.setOnClickListener {
+            value = (screen.text as String).toDouble()
+            operation = "/"
+            screen.text = "0"
+        }
 
-            var result = ""
+        btn_equals.setOnClickListener {
 
             when (operation) {
                 "%" -> {
@@ -193,18 +208,19 @@ class MainActivity : AppCompatActivity() {
                     result = (value * (screen.text as String).toDouble()).toString()
                 }
             }
-
-            items.addItem(
-                value.toString() +
-                        operation +
-                        ((screen.text.toString()).toDouble()).toString() +
-                        "=" +
-                        (screen.text.toString()).toDouble().toString()
-            )
-
+            if (result != "0") {
+                items.addItem(
+                    value.toString() +
+                            operation +
+                            ((screen.text.toString()).toDouble()).toString() +
+                            "=" +
+                            (result.toString()).toDouble().toString()
+                )
+            }
             screen.text = result
             showLogs()
             operation = null
+
         }
     }
 
