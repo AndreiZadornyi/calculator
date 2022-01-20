@@ -11,6 +11,12 @@ import kotlin.collections.ArrayList
 
 class Preferences(private val context: Context) {
 
+    fun onDestroy() {
+        val edit = context.getSharedPreferences("preferences", 0).edit()
+        edit.clear()
+        edit.apply()
+    }
+
     fun setLogResult(logs: ArrayList<String>?) {
         var s = ""
         if (logs != null) {
@@ -29,7 +35,7 @@ class Preferences(private val context: Context) {
         return if (s != null) {
             gson.fromJson(
                 s,
-                object : TypeToken<ArrayList<ResultItem>?>() {}.type
+                object : TypeToken<ArrayList<String>?>() {}.type
             )
         } else null
     }

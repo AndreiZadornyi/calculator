@@ -1,9 +1,11 @@
 package com.example.calculator
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.calculator.adapters.ItemListAdapter
+import com.example.calculator.models.LogResult
 import com.example.calculator.models.ResultItem
 import com.example.calculator.utils.Preferences
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     val reg_ex_find_delimiter = Regex("[.][0-9]{1}$+")
 
     private var adapter: ItemListAdapter? = null
-    private var items: Preferences? = null
+    private var items = Preferences(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,6 +133,7 @@ class MainActivity : AppCompatActivity() {
             screen.text = "0"
             operation = null
             value = 0.0
+            items.onDestroy()
         }
 
         btn_backspace.setOnClickListener {
@@ -174,27 +177,36 @@ class MainActivity : AppCompatActivity() {
 
         btn_equals.setOnClickListener {
 
-            var result_str = value.toString() + operation + screen.text.toString()
+            var result = ""
 
             when (operation) {
                 "%" -> {
-                    screen.text = (value / 100 * (screen.text as String).toDouble()).toString()
+                    result = (value / 100 * (screen.text as String).toDouble()).toString()
                 }
                 "/" -> {
-                    screen.text = (value / (screen.text as String).toDouble()).toString()
+                    result = (value / (screen.text as String).toDouble()).toString()
                 }
                 "+" -> {
-                    screen.text = (value + (screen.text as String).toDouble()).toString()
+                    result = (value + (screen.text as String).toDouble()).toString()
                 }
                 "-" -> {
-                    screen.text = (value - (screen.text as String).toDouble()).toString()
+                    result = (value - (screen.text as String).toDouble()).toString()
                 }
                 "*" -> {
-                    screen.text = (value * (screen.text as String).toDouble()).toString()
+                    result = (value * (screen.text as String).toDouble()).toString()
                 }
             }
 
-            items?.addItem(result_str)
+            items.addItem(
+                value.toString() +
+                        operation +
+                        ((screen.text.toString()).toDouble()).toString() +
+                        "=" +
+                        (screen.text.toString()).toDouble().toString()
+            )
+
+            screen.text = result
+
             operation = null
         }
     }
