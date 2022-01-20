@@ -14,7 +14,7 @@
         android:layout_marginVertical="20dp"
         android:background="@color/white"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintBottom_toTopOf="@+id/screen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
